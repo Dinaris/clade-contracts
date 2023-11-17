@@ -3,6 +3,8 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/utils/Context.sol";
 
+
+//todo add events
 contract SessionManager is Context {
 
     struct SessionBlock {
