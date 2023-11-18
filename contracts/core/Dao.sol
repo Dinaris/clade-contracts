@@ -2,15 +2,26 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/utils/Context.sol";
+import "./SessionManager.sol";
 
-
-// todo: add events
 contract Dao is Context {
 
     string public name;
     string public symbol;
     string public logo;
     string public description;
+
+    constructor(
+        string memory _name,
+        string memory _symbol,
+        string memory _logo,
+        string memory _description
+    ) {
+        name = _name;
+        symbol = _symbol;
+        logo = _logo;
+        description = _description;
+    }
 
     struct MemberInfo {
         address user;
@@ -22,7 +33,6 @@ contract Dao is Context {
     }
 
     mapping(address => MemberInfo) public members;
-
 
     modifier isMember(address _user) {
         require(members[_user].user == _user, "CladeDao: user is not member");
@@ -39,7 +49,5 @@ contract Dao is Context {
         require(members[_user].userType == 1, "CladeDao: user is not moderator");
         _;
     }
-
-
 
 }
