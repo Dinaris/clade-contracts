@@ -16,6 +16,8 @@ contract DotCollector is Context {
     //dao => session => dot
     mapping(address => mapping(uint256 => Dot[])) public dots;
 
+    event DotAdded(address dao, uint256 session, address from, address to, uint256 value);
+
     function addDot(
         address _dao,
         uint256 _session,
