@@ -2,9 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/utils/Context.sol";
-import "./Dao.sol";
 
-//todo add events
 contract DotCollector is Context {
 
     struct Dot {
@@ -16,7 +14,11 @@ contract DotCollector is Context {
     //dao => session => dot
     mapping(address => mapping(uint256 => Dot[])) public dots;
 
-    event DotAdded(address dao, uint256 session, address from, address to, uint256 value);
+    event DotAdded(address dao,
+        uint256 session,
+        address from,
+        address to,
+        uint256 value);
 
     function addDot(
         address _dao,
@@ -58,6 +60,25 @@ contract DotCollector is Context {
         uint256 _value
     ) public returns (bool) {
         return addDot(msg.sender, _session, _from, _to, _value);
+    }
+
+    function getDots(address _dao, uint256 _session) public view returns (Dot[] memory) {
+        return dots[_dao][_session];
+    }
+
+    function getDot(address _dao, uint256 _session, uint256 _index) public view returns (Dot memory) {
+        return dots[_dao][_session][_index];
+    }
+
+    function getDotsPaginated(address _dao, uint256 _session, uint256 _page, uint256 _perPage) public view returns (Dot[] memory) {
+        Dot[] memory _dots = dots[_dao][_session];
+        Dot[] memory _result = new Dot[](_perPage);
+        uint256 _index = 0;
+        for (uint256 i = _page * _perPage; i < (_page + 1) * _perPage; i++) {
+            _result[_index] = _dots[i];
+            _index++;
+        }
+        return _result;
     }
 
 }
